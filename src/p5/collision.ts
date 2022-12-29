@@ -1,11 +1,13 @@
 import { TriangleBox } from "./TriangleBox";
-import { dist, mouseX, mouseY } from "../p5";
+import { p5i } from "p5i";
+
+const { dist, mouseX, mouseY } = p5i();
 
 export function attachOtherBoxes(
   boxes: TriangleBox[],
   currentBoxId: string,
   distance = 15
-) {
+): [TriangleBox | undefined, number] {
   for (let i = 0; i < boxes.length; i++) {
     if (boxes[i].id === currentBoxId) continue;
     for (const key of boxes[i]["vertex"].keys()) {

@@ -1,4 +1,6 @@
-import { abs } from "../p5";
+import { p5i } from "p5i";
+
+const { abs } = p5i();
 
 export function collidePointTriangle(
   px: number,

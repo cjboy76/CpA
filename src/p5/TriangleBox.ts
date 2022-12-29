@@ -1,13 +1,15 @@
-import { strokeWeight, triangle, stroke, circle } from "../p5";
+import { p5i } from "p5i";
 
-type TDot = [number, number];
-type TDots = [number, number, number, number, number, number];
+const { strokeWeight, triangle, stroke, circle } = p5i();
+
+export type TDot = [number, number];
+export type TDots = [number, number, number, number, number, number];
 
 export class TriangleBox {
   id: string;
   pointMap: Record<string, TDot> = {};
   vertex: TDot[] = [];
-  dots: TDots;
+  dots!: TDots;
   hovered: boolean = false;
   onDraft: boolean = true;
 
@@ -20,8 +22,6 @@ export class TriangleBox {
     y3: number
   ) {
     this.id = new Date().toISOString();
-    this.dots = [x1, y1, x2, y2, x3, y3];
-
     this.init(x1, y1, x2, y2, x3, y3);
   }
 
