@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.7",
+    "p5i": "^0.4.2",
     "vue": "^3.2.45"
   },
   "devDependencies": {
