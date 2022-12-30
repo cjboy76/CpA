@@ -1,7 +1,3 @@
-import { p5i } from "p5i";
-
-const { strokeWeight, triangle, stroke, circle } = p5i();
-
 export type TDot = [number, number];
 export type TDots = [number, number, number, number, number, number];
 
@@ -23,19 +19,6 @@ export class TriangleBox {
   ) {
     this.id = new Date().toISOString();
     this.init(x1, y1, x2, y2, x3, y3);
-  }
-
-  draw() {
-    let borderColor = this.hovered ? "red" : "black";
-    stroke(borderColor);
-    strokeWeight(1);
-
-    triangle(...this.dots);
-    if (this.onDraft) {
-      circle(...this.pointMap[0], 5);
-      circle(...this.pointMap[1], 5);
-      circle(...this.pointMap[2], 5);
-    }
   }
 
   updateDot(index: number, { x, y }: Record<string, number>) {

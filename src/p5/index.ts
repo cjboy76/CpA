@@ -1,29 +1,88 @@
-import { p5i } from "p5i";
-import { TriangleBox } from "./TriangleBox";
-import { getNearestVertex, attachOtherBoxes } from "./collision";
-import { collidePointTriangle } from "./collidePointTriangle";
+import { p5i } from 'p5i';
+import { TriangleBox } from './TriangleBox';
 
-let { mouseX, mouseY, cursor, pmouseX, pmouseY } = p5i();
 let cnv: any;
-let boxes: TriangleBox[];
+let boxes: TriangleBox[] = [];
 let detachBox: any;
 let detachIndex: any;
 let hoveredBox: any;
 let grabbing = false;
 let grabbingItem: any;
 
-const sketch = p5i(() => {
+const p5sketch = p5i(() => {
   return {
     setup({ createCanvas }) {
       cnv = createCanvas(600, 600);
-      cnv.parent("sketch-holder");
+    },
 
-      boxes.push(new TriangleBox(30, 75, 58, 20, 86, 75));
+    draw({
+      background,
+      mouseX,
+      mouseY,
+      pmouseX,
+      pmouseY,
+      cursor,
+      stroke,
+      strokeWeight,
+      triangle,
+      circle,
+      abs,
+      dist,
+    }) {
+      background(220);
+      hoveredBox = undefined;
+
+      for (const box of boxes) {
+        // Draw boxes
+        drawTriangle(box);
+        // Detect mouseover boxes and change borders color
+        box.hovered = collidePointTriangle(mouseX, mouseY, ...box.dots);
+        if (box.hovered) hoveredBox = box;
+      }
+
+      // Cursor style
+      if (grabbing) {
+        cursor('grabbing');
+      } else if (detachBox && !grabbing) {
+        cursor('grab');
+      } else {
+        cursor('default');
+      }
+
+      // Grab and dragging box or box's vertex
+      if (grabbing) {
+        // What we grabbing now is a vertex of a box
+        if (detachBox) {
+          grabbingItem.updateDot(detachIndex, { x: mouseX, y: mouseY });
+
+          // Detect is there any box's vertex nearby, if there is, attach it.
+          let [attached, attachDotIndex] = attachOtherBoxes(
+            boxes,
+            grabbingItem.id,
+            mouseX,
+            mouseY
+          );
+          if (attached) {
+            let [attachedX, attachedY] = attached['vertex'][attachDotIndex];
+            mouseX = attachedX;
+            mouseY = attachedY;
+          }
+
+          // What we grabbing now is a box, not a vertex of a box
+        } else {
+          grabbingItem.updateDots(mouseX - pmouseX, mouseY - pmouseY);
+        }
+      }
 
       cnv.mouseMoved(() => {
         if (!grabbing) {
           if (hoveredBox) {
-            let [onVertex, index] = getNearestVertex(hoveredBox);
+            let [onVertex, index] = getNearestVertex(
+              hoveredBox,
+              mouseX,
+              mouseY
+            );
+
             if (onVertex) {
               detachBox = hoveredBox;
               detachIndex = index;
@@ -47,57 +106,76 @@ const sketch = p5i(() => {
         grabbing = !!detachBox || !!hoveredBox;
         grabbingItem = detachBox || hoveredBox;
       });
-    },
 
-    draw({ background }) {
-      background(220);
-      hoveredBox = undefined;
-
-      for (const box of boxes) {
-        // Draw boxes
-        box.draw();
-        // Detect mouseover boxes and change borders color
-        box.hovered = collidePointTriangle(mouseX, mouseY, ...box.dots);
-        if (box.hovered) hoveredBox = box;
-      }
-
-      // Cursor style
-      if (grabbing) {
-        cursor("grabbing");
-      } else if (detachBox && !grabbing) {
-        cursor("grab");
-      } else {
-        cursor("default");
-      }
-
-      // Grab and dragging box or box's vertex
-      if (grabbing) {
-        // What we grabbing now is a vertex of a box
-        if (detachBox) {
-          grabbingItem.updateDot(detachIndex, { x: mouseX, y: mouseY });
-
-          // Detect is there any box's vertex nearby, if there is, attach it.
-          let [attached, attachDotIndex] = attachOtherBoxes(
-            boxes,
-            grabbingItem.id
-          );
-          if (attached) {
-            let [attachedX, attachedY] = attached["vertex"][attachDotIndex];
-            mouseX = attachedX;
-            mouseY = attachedY;
-          }
-
-          // What we grabbing now is a box, not a vertex of a box
-        } else {
-          grabbingItem.updateDots(mouseX - pmouseX, mouseY - pmouseY);
+      function getNearestVertex(
+        box: TriangleBox,
+        mouseX: number,
+        mouseY: number,
+        distance = 10
+      ) {
+        for (const key of box.vertex.keys()) {
+          let d = dist(...box['vertex'][key], mouseX, mouseY);
+          if (d <= distance) return [true, key];
         }
+        return [false, -1];
+      }
+
+      function drawTriangle(box: TriangleBox) {
+        let borderColor = box.hovered ? 'red' : 'black';
+        stroke(borderColor);
+        strokeWeight(1);
+
+        triangle(...box.dots);
+        if (box.onDraft) {
+          circle(...box.pointMap[0], 5);
+          circle(...box.pointMap[1], 5);
+          circle(...box.pointMap[2], 5);
+        }
+      }
+
+      function collidePointTriangle(
+        px: number,
+        py: number,
+        x1: number,
+        y1: number,
+        x2: number,
+        y2: number,
+        x3: number,
+        y3: number
+      ) {
+        // get the area of the triangle
+        let areaOrig = abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
+
+        // get the area of 3 triangles made between the point and the corners of the triangle
+        let area1 = abs((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py));
+        let area2 = abs((x2 - px) * (y3 - py) - (x3 - px) * (y2 - py));
+        let area3 = abs((x3 - px) * (y1 - py) - (x1 - px) * (y3 - py));
+
+        // if the sum of the three areas equals the original, we're inside the triangle!
+        if (area1 + area2 + area3 === areaOrig) {
+          return true;
+        }
+        return false;
+      }
+
+      function attachOtherBoxes(
+        boxes: TriangleBox[],
+        currentBoxId: string,
+        mouseX: number,
+        mouseY: number,
+        distance = 15
+      ): [TriangleBox | undefined, number] {
+        for (let i = 0; i < boxes.length; i++) {
+          if (boxes[i].id === currentBoxId) continue;
+          for (const key of boxes[i]['vertex'].keys()) {
+            let d = dist(...boxes[i]['vertex'][key], mouseX, mouseY);
+            if (d <= distance) return [boxes[i], key];
+          }
+        }
+        return [undefined, -1];
       }
     },
   };
 });
 
-export function initP5(el: HTMLElement) {
-  return () => {
-    sketch.mount(el);
-  };
-}
+export { p5sketch, boxes };
