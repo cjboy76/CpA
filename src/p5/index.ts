@@ -55,17 +55,17 @@ const p5sketch = p5i(() => {
         if (detachBox) {
           grabbingItem.updateDot(detachIndex, { x: mouseX, y: mouseY });
 
-          // Detect is there any box's vertex nearby, if there is, attach it.
+          // Detect is there any box's vertex nearby.
           let [attached, attachDotIndex] = attachOtherBoxes(
             boxes,
             grabbingItem.id,
             mouseX,
             mouseY
           );
+          // if grabbingItem is close enough to other box's vertex, attach it.
           if (attached) {
             let [attachedX, attachedY] = attached['vertex'][attachDotIndex];
-            mouseX = attachedX;
-            mouseY = attachedY;
+            grabbingItem.updateDot(detachIndex, { x: attachedX, y: attachedY });
           }
 
           // What we grabbing now is a box, not a vertex of a box
@@ -178,4 +178,4 @@ const p5sketch = p5i(() => {
   };
 });
 
-export { p5sketch, boxes };
+export { p5sketch, boxes, cnv };

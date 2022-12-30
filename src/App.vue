@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { p5sketch, boxes } from './p5'
+import { p5sketch, boxes, cnv } from './p5'
 import { TriangleBox } from './p5/TriangleBox';
 import { onMounted, ref } from 'vue';
 
-let sketchElement = ref()
+const sketchElement = ref()
 
 onMounted(() => {
-  p5sketch.mount(sketchElement.value);
+  p5sketch.mount(sketchElement.value)
 })
 
 
 function createBoxHandler() {
   boxes.push(new TriangleBox(30, 75, 58, 20, 86, 75));
+}
+
+function saveAsImage() {
+  boxes.forEach((b) => (b.onDraft = false));
 }
 
 
@@ -21,7 +25,7 @@ function createBoxHandler() {
   <main>
     <p>Here is my sketch:</p>
     <button id="appendNewBox" @click='createBoxHandler'>Add a new box</button>
-    <button id="saveAsImage">Save canvas as image</button>
+    <button id="saveAsImage" @click='saveAsImage'>Save canvas as image</button>
     <div id="sketch-holder" ref='sketchElement'>
       <!-- Our sketch will go here! -->
     </div>
