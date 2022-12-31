@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { p5sketch, boxes, save as saveCanvas, cnv } from "./p5";
-import { TriangleBox } from "./p5/TriangleBox";
+import { p5sketch, boxes, save as saveCanvas, cnv } from "../p5";
+import { TriangleBox } from "../p5/TriangleBox";
 import { onMounted, ref, watch } from "vue";
 
 const sketchElement = ref();
@@ -40,19 +40,3 @@ function saveAsPreview() {
     <img :src="preview" alt="preview" />
   </main>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>

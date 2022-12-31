@@ -1,18 +1,21 @@
-import { p5i } from 'p5i';
-import { TriangleBox } from './TriangleBox';
+import { p5i } from "p5i";
+import { TriangleBox } from "./TriangleBox";
+import { ref } from "vue";
 
-let cnv: any;
+// let cnv: any;
 let boxes: TriangleBox[] = [];
 let detachBox: any;
 let detachIndex: any;
 let hoveredBox: any;
 let grabbing = false;
 let grabbingItem: any;
+const save = ref(false);
+const cnv = ref();
 
 const p5sketch = p5i(() => {
   return {
     setup({ createCanvas }) {
-      cnv = createCanvas(600, 600);
+      cnv.value = createCanvas(600, 600);
     },
 
     draw({
@@ -28,6 +31,7 @@ const p5sketch = p5i(() => {
       circle,
       abs,
       dist,
+      saveCanvas,
     }) {
       background(220);
       hoveredBox = undefined;
@@ -42,11 +46,11 @@ const p5sketch = p5i(() => {
 
       // Cursor style
       if (grabbing) {
-        cursor('grabbing');
+        cursor("grabbing");
       } else if (detachBox && !grabbing) {
-        cursor('grab');
+        cursor("grab");
       } else {
-        cursor('default');
+        cursor("default");
       }
 
       // Grab and dragging box or box's vertex
@@ -64,7 +68,7 @@ const p5sketch = p5i(() => {
           );
           // if grabbingItem is close enough to other box's vertex, attach it.
           if (attached) {
-            let [attachedX, attachedY] = attached['vertex'][attachDotIndex];
+            let [attachedX, attachedY] = attached["vertex"][attachDotIndex];
             grabbingItem.updateDot(detachIndex, { x: attachedX, y: attachedY });
           }
 
@@ -74,7 +78,7 @@ const p5sketch = p5i(() => {
         }
       }
 
-      cnv.mouseMoved(() => {
+      cnv.value.mouseMoved(() => {
         if (!grabbing) {
           if (hoveredBox) {
             let [onVertex, index] = getNearestVertex(
@@ -96,16 +100,22 @@ const p5sketch = p5i(() => {
         }
       });
 
-      cnv.mouseReleased(() => {
+      cnv.value.mouseReleased(() => {
         grabbing = false;
         grabbingItem = undefined;
         detachBox = undefined;
       });
 
-      cnv.mousePressed(() => {
+      cnv.value.mousePressed(() => {
         grabbing = !!detachBox || !!hoveredBox;
         grabbingItem = detachBox || hoveredBox;
       });
+
+      // Save image
+      if (save.value) {
+        saveCanvas(cnv.value, "myCanvas");
+        save.value = false;
+      }
 
       function getNearestVertex(
         box: TriangleBox,
@@ -114,14 +124,14 @@ const p5sketch = p5i(() => {
         distance = 10
       ) {
         for (const key of box.vertex.keys()) {
-          let d = dist(...box['vertex'][key], mouseX, mouseY);
+          let d = dist(...box["vertex"][key], mouseX, mouseY);
           if (d <= distance) return [true, key];
         }
         return [false, -1];
       }
 
       function drawTriangle(box: TriangleBox) {
-        let borderColor = box.hovered ? 'red' : 'black';
+        let borderColor = box.hovered ? "red" : "black";
         stroke(borderColor);
         strokeWeight(1);
 
@@ -167,8 +177,8 @@ const p5sketch = p5i(() => {
       ): [TriangleBox | undefined, number] {
         for (let i = 0; i < boxes.length; i++) {
           if (boxes[i].id === currentBoxId) continue;
-          for (const key of boxes[i]['vertex'].keys()) {
-            let d = dist(...boxes[i]['vertex'][key], mouseX, mouseY);
+          for (const key of boxes[i]["vertex"].keys()) {
+            let d = dist(...boxes[i]["vertex"][key], mouseX, mouseY);
             if (d <= distance) return [boxes[i], key];
           }
         }
@@ -178,4 +188,4 @@ const p5sketch = p5i(() => {
   };
 });
 
-export { p5sketch, boxes, cnv };
+export { p5sketch, boxes, cnv, save };
