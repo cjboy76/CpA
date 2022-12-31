@@ -1,44 +1,43 @@
-<script setup lang="ts">
-import { p5sketch, boxes, save as saveCanvas, cnv } from "./p5";
-import { TriangleBox } from "./p5/TriangleBox";
-import { onMounted, ref, watch } from "vue";
-
-const sketchElement = ref();
-const preview = ref("");
-
-onMounted(() => {
-  p5sketch.mount(sketchElement.value);
-  console.log("onMounted", cnv.value);
-});
-
-function createBoxHandler() {
-  boxes.push(new TriangleBox(30, 75, 58, 20, 86, 75));
-}
-
-function saveAsImage() {
-  // boxes.forEach((b) => (b.onDraft = false));
-  saveCanvas.value = true;
-}
-
-function saveAsPreview() {
-  if (!cnv.value) return;
-  preview.value = cnv.value.canvas.toDataURL("image/jpeg", 0.3);
-}
+<script lang="ts" setup>
+import MaterialSymbolsSettings from "./components/Icons/MaterialSymbolsSettings.vue";
+import SideBar from "./components/SideBar.vue";
+import DrawBoard from "./components/DrawBoard.vue";
+import VSpacer from "./components/VSpacer.vue";
 </script>
-
 <template>
-  <main>
-    <p>Here is my sketch:</p>
-    <button id="appendNewBox" @click="createBoxHandler">Add a new box</button>
-    <button id="saveAsImage" @click="saveAsImage">Save canvas as image</button>
-    <button id="saveAsPreview" @click="saveAsPreview">
-      Save canvas as image
-    </button>
-    <div id="sketch-holder" ref="sketchElement">
-      <!-- Our sketch will go here! -->
-    </div>
-    <img :src="preview" alt="preview" />
-  </main>
+  <div id="app">
+    <header class="font-bold border border-white h-16 flex items-center">
+      <button
+        type="button"
+        class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+      >
+        <MaterialSymbolsSettings class="text-xl" />
+      </button>
+      <h1 class="text-xl px-2">Clip-path Animate</h1>
+      <v-spacer></v-spacer>
+      <button
+        type="button"
+        class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+      >
+        Edit
+      </button>
+      <button
+        type="button"
+        class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+      >
+        Result
+      </button>
+    </header>
+    <main class="grid grid-cols-10 h-full">
+      <div class="col-span-2">
+        <SideBar />
+      </div>
+      <div class="col-span-6">
+        <DrawBoard />
+      </div>
+      <div class="col-span-2">Frames</div>
+    </main>
+  </div>
 </template>
 
 <style scoped>

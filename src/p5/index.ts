@@ -1,8 +1,16 @@
 import { p5i } from "p5i";
 import { TriangleBox } from "./TriangleBox";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
-// let cnv: any;
+const p5State = reactive({
+  boxes: [],
+  detachBox: undefined,
+  detachIndex: undefined,
+  hoveredBox: undefined,
+  grabbing: false,
+  grabbingItem: undefined,
+});
+
 let boxes: TriangleBox[] = [];
 let detachBox: any;
 let detachIndex: any;
@@ -188,4 +196,4 @@ const p5sketch = p5i(() => {
   };
 });
 
-export { p5sketch, boxes, cnv, save };
+export { p5sketch, boxes, cnv, save, p5State };
