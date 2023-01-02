@@ -1,6 +1,6 @@
 <template>
   <div class="w-80 p-2">
-    <h5>Color</h5>
+    <h5 class="font-semibold">Color</h5>
 
     <TabGroup>
       <TabList class="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
@@ -15,8 +15,8 @@
               'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700',
               'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
               selected
-                ? 'bg-white shadow'
-                : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',
+                ? 'bg-stone-800 text-blue-100'
+                : ' hover:bg-white/[0.12] hover:text-white',
             ]"
           >
             {{ title }}
@@ -26,17 +26,14 @@
       <input
         v-model="palette"
         type="text"
-        class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none"
+        class="mt-1 block w-full px-3 py-2 rounded-md text-sm shadow-sm text-stone-800 dark:text-stone-300 focus:outline-none bg-stone-200 dark:bg-stone-600"
       />
 
       <TabPanels class="mt-2">
         <TabPanel
           v-for="{ title, type } in tabs"
           :key="title"
-          :class="[
-            'rounded-xl bg-white p-3',
-            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-          ]"
+          class="rounded-xl bg-blend-soft-light p-3"
         >
           <div class="flex flex-wrap">
             <button
@@ -56,10 +53,9 @@
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { onMounted, ref } from "vue";
 import { ColorSheet } from "../data/ColorSheet";
-
 const emit = defineEmits(["setPalette"]);
 const props = defineProps({
-  palette: String,
+  color: String,
 });
 
 const tabs: { title: string; type: "linear" | "plain" }[] = [
@@ -74,8 +70,6 @@ function setPalette(color: string) {
 }
 
 onMounted(() => {
-  if (!props.palette) {
-    setPalette(ColorSheet[0]["linear"]);
-  }
+  if (props.color) palette.value = props.color;
 });
 </script>

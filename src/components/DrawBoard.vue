@@ -27,13 +27,13 @@ function saveAsPreview() {
 <template>
   <main>
     <p>Here is my sketch:</p>
-    <button classic id="appendNewBox" @click="createBoxHandler">
+    <button class="btn-primary" id="appendNewBox" @click="createBoxHandler">
       Add a new box
     </button>
-    <button classic id="saveAsImage" @click="saveAsImage">
+    <button class="btn-primary" id="saveAsImage" @click="saveAsImage">
       Save canvas as image
     </button>
-    <button classic id="saveAsPreview" @click="saveAsPreview">
+    <button class="btn-primary" id="saveAsPreview" @click="saveAsPreview">
       Save canvas as image
     </button>
     <div id="sketch-holder" ref="sketchElement">

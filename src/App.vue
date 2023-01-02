@@ -1,35 +1,44 @@
 <script lang="ts" setup>
-import MaterialSymbolsSettings from "./components/Icons/MaterialSymbolsSettings.vue";
 import SideBar from "./components/SideBar.vue";
 import DrawBoard from "./components/DrawBoard.vue";
 import VSpacer from "./components/VSpacer.vue";
+import AppSetting from "./components/Setting.vue";
+import { onMounted, inject, watchEffect } from "vue";
+import { themeReactive } from "./state";
+
+const { theme, setTheme } = inject("themeReactive", themeReactive);
+
+onMounted(() => {
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    setTheme("dark");
+    console.log(theme.value);
+    return;
+  }
+
+  if (localStorage.theme) setTheme(localStorage.theme);
+});
+
+watchEffect(() => {
+  if (theme.value === "dark") {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+});
 </script>
 <template>
-  <div id="app">
-    <header class="font-bold border border-white h-16 flex items-center">
-      <button
-        classic
-        type="button"
-        class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-      >
-        <MaterialSymbolsSettings class="text-xl" />
-      </button>
+  <div
+    id="app"
+    class="h-screen bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-300"
+  >
+    <header
+      class="px-2 font-bold border-b border-gray-300 h-16 flex items-center"
+    >
       <h1 class="text-xl px-2">Clip-path Animate</h1>
       <v-spacer></v-spacer>
-      <button
-        classic
-        type="button"
-        class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-      >
-        Edit
-      </button>
-      <button
-        classic
-        type="button"
-        class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-      >
-        Result
-      </button>
+      <AppSetting />
+      <button type="button" class="btn-primary mx-1">Edit</button>
+      <button type="button" class="btn-primary mx-1">Result</button>
     </header>
     <main class="grid grid-cols-10 h-full">
       <div class="col-span-2">
@@ -42,19 +51,3 @@ import VSpacer from "./components/VSpacer.vue";
     </main>
   </div>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>

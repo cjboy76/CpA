@@ -6,18 +6,14 @@ import ColorPicker from "./ColorPicker.vue";
 const colorState = ref("");
 function setColor(color: string) {
   colorState.value = color;
-  console.log(colorState.value);
 }
 </script>
 
 <template>
-  <div class="border border-white">
-    <h4>
-      Box
-      {{ colorState }}
-    </h4>
-    <div>
-      <div class="flex items-center">
+  <div class="border-r border-gray-300">
+    <h4 class="px-2">Box</h4>
+    <ul>
+      <li class="flex items-center my-2">
         <label for="opacity" class="text-sm w-20 text-center">Opacity</label>
         <input
           id="default-range"
@@ -25,16 +21,16 @@ function setColor(color: string) {
           value="100"
           class="accent-teal-500 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
         />
-      </div>
-      <div class="flex items-center">
+      </li>
+      <li class="flex items-center my-2">
         <label for="color" class="text-sm w-20 text-center">Color</label>
 
-        <Popover v-slot="{ open }" class="relative">
+        <Popover v-slot="{ open }" class="flex items-center">
           <PopoverButton
             :class="open ? '' : 'text-opacity-90'"
-            class="group inline-flex items-center rounded-md bg-orange-700 px-3 py-2 text-base font-medium text-white hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            class="rouned w-16 h-5 bg-stone-400 dark:bg-stone-700 group inline-flex items-center rounded-sm focus:outline-none"
+            :style="{ background: colorState }"
           >
-            <div class="rouned bg-pink-500 w-10 h-2"></div>
           </PopoverButton>
 
           <transition
@@ -49,16 +45,14 @@ function setColor(color: string) {
               class="absolute left-[15vw] z-10 w-max max-w-sm px-4 sm:px-0 lg:max-w-3xl"
             >
               <div
-                class="rounded shadow-lg ring-1 ring-black ring-opacity-5 bg-white text-black"
+                class="rounded ring-1 ring-black ring-opacity-5 bg-stone-50 dark:bg-stone-800 drop-shadow"
               >
-                <ColorPicker :palette="colorState" @set-palette="setColor" />
+                <ColorPicker :color="colorState" @set-palette="setColor" />
               </div>
             </PopoverPanel>
           </transition>
         </Popover>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
-
-<style scoped></style>
