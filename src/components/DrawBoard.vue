@@ -8,7 +8,6 @@ const preview = ref("");
 
 onMounted(() => {
   p5sketch.mount(sketchElement.value);
-  console.log("onMounted", cnv.value);
 });
 
 function createBoxHandler() {
@@ -16,7 +15,6 @@ function createBoxHandler() {
 }
 
 function saveAsImage() {
-  // boxes.forEach((b) => (b.onDraft = false));
   saveCanvas.value = true;
 }
 
@@ -29,9 +27,13 @@ function saveAsPreview() {
 <template>
   <main>
     <p>Here is my sketch:</p>
-    <button id="appendNewBox" @click="createBoxHandler">Add a new box</button>
-    <button id="saveAsImage" @click="saveAsImage">Save canvas as image</button>
-    <button id="saveAsPreview" @click="saveAsPreview">
+    <button classic id="appendNewBox" @click="createBoxHandler">
+      Add a new box
+    </button>
+    <button classic id="saveAsImage" @click="saveAsImage">
+      Save canvas as image
+    </button>
+    <button classic id="saveAsPreview" @click="saveAsPreview">
       Save canvas as image
     </button>
     <div id="sketch-holder" ref="sketchElement">

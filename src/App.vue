@@ -8,6 +8,7 @@ import VSpacer from "./components/VSpacer.vue";
   <div id="app">
     <header class="font-bold border border-white h-16 flex items-center">
       <button
+        classic
         type="button"
         class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
       >
@@ -16,12 +17,14 @@ import VSpacer from "./components/VSpacer.vue";
       <h1 class="text-xl px-2">Clip-path Animate</h1>
       <v-spacer></v-spacer>
       <button
+        classic
         type="button"
         class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
       >
         Edit
       </button>
       <button
+        classic
         type="button"
         class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
       >
