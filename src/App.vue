@@ -41,7 +41,7 @@ watchEffect(() => {
       <button type="button" class="btn-primary mx-1">Edit</button>
       <button type="button" class="btn-primary mx-1">Result</button>
     </header>
-    <main class="grid grid-cols-10 h-full">
+    <main class="grid grid-cols-10" style="height: calc(100vh - 64px)">
       <div class="col-span-2">
         <SideBar />
       </div>
