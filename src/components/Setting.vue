@@ -4,6 +4,17 @@
   </button>
   <TransitionRoot appear :show="isOpen" as="template">
     <Dialog as="div" @close="isOpen = false" class="relative z-10">
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-200 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
+      >
+        <div class="fixed inset-0 bg-black bg-opacity-25" />
+      </TransitionChild>
       <div class="fixed inset-0 overflow-y-auto">
         <div
           class="flex min-h-full items-center justify-center p-4 text-center"
@@ -18,7 +29,7 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl text-stone-800 dark:text-stone-300 bg-stone-50 dark:bg-stone-800 p-6 text-left align-middle shadow-xl transition-all border border-violet-300"
+              class="w-full max-w-md transform overflow-hidden rounded-sm text-stone-800 dark:text-stone-300 bg-stone-50 dark:bg-stone-800 p-6 text-left align-middle shadow-xl transition-all border border-violet-300"
             >
               <DialogTitle as="h3" class="text-lg font-medium leading-6">
                 Settings

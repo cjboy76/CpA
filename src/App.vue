@@ -11,7 +11,6 @@ const { theme, setTheme } = inject("themeReactive", themeReactive);
 onMounted(() => {
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
     setTheme("dark");
-    console.log(theme.value);
     return;
   }
 
@@ -32,9 +31,11 @@ watchEffect(() => {
     class="h-screen bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-300"
   >
     <header
-      class="px-2 font-bold border-b border-gray-300 h-16 flex items-center"
+      class="px-2 font-bold border-b border-violet-300 h-16 flex items-center"
     >
-      <h1 class="text-xl px-2">Clip-path Animate</h1>
+      <a href="/">
+        <h1 class="text-xl px-2">Clip-path Animate</h1>
+      </a>
       <v-spacer></v-spacer>
       <AppSetting />
       <button type="button" class="btn-primary mx-1">Edit</button>

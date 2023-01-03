@@ -23,7 +23,11 @@ const cnv = ref();
 const p5sketch = p5i(() => {
   return {
     setup({ createCanvas }) {
-      cnv.value = createCanvas(600, 600);
+      let mountElement = document.querySelector("#sketch-holder");
+      let height = mountElement?.clientHeight;
+      let width = mountElement?.clientWidth;
+      console.log(height);
+      cnv.value = createCanvas(width || 1000, height || 1000);
     },
 
     draw({

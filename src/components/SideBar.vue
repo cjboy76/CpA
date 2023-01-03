@@ -22,7 +22,7 @@ function setColor(color: string) {
           class="accent-teal-500 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
         />
       </li>
-      <li class="flex items-center my-2">
+      <li class="flex items-center my-2 relative">
         <label for="color" class="text-sm w-20 text-center">Color</label>
 
         <Popover v-slot="{ open }" class="flex items-center">
@@ -42,7 +42,7 @@ function setColor(color: string) {
             leave-to-class="translate-y-1 opacity-0"
           >
             <PopoverPanel
-              class="absolute left-[15vw] z-10 w-max max-w-sm px-4 sm:px-0 lg:max-w-3xl"
+              class="absolute left-1/5 top-8 z-10 w-max max-w-sm px-4 sm:px-0 lg:max-w-3xl"
             >
               <div
                 class="rounded ring-1 ring-black ring-opacity-5 bg-stone-50 dark:bg-stone-800 drop-shadow"
