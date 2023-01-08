@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ref } from "vue";
+import { BoxStore } from "../store";
 import ColorPicker from "./ColorPicker.vue";
 
 const colorState = ref("");
@@ -59,6 +60,14 @@ function setColor(color: string) {
     <div class="h-px w-full bg-violet-300"></div>
     <div>
       <h4 class="px-2 py-1 font-bold">Boxes Info</h4>
+      <ul>
+        <li v-for="{ id, vertex } of BoxStore.boxes" :key="id">
+          <h5>Box {{ id }}</h5>
+          <p>
+            {{ vertex }}
+          </p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

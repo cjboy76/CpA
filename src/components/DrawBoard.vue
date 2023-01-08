@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { p5sketch, boxes, save as saveCanvas, cnv } from "../p5";
-import { TriangleBox } from "../p5/TriangleBox";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
+import { BoxStore } from "../store";
 
 const sketchElement = ref();
 const preview = ref("");
@@ -11,7 +11,7 @@ onMounted(() => {
 });
 
 function createBoxHandler() {
-  boxes.push(new TriangleBox(30, 95, 58, 40, 86, 95));
+  BoxStore.createBox();
 }
 
 function saveAsImage() {

@@ -1,6 +1,7 @@
 import { p5i } from "p5i";
 import { TriangleBox } from "./TriangleBox";
 import { ref, reactive } from "vue";
+import { BoxStore } from "../store";
 
 const p5State = reactive({
   boxes: [],
@@ -26,7 +27,6 @@ const p5sketch = p5i(() => {
       let mountElement = document.querySelector("#sketch-holder");
       let height = mountElement?.clientHeight;
       let width = mountElement?.clientWidth;
-      console.log(height);
       cnv.value = createCanvas(width || 1000, height || 1000);
     },
 
@@ -48,7 +48,7 @@ const p5sketch = p5i(() => {
       background(220);
       hoveredBox = undefined;
 
-      for (const box of boxes) {
+      for (const box of BoxStore.boxes) {
         // Draw boxes
         drawTriangle(box);
         // Detect mouseover boxes and change borders color
