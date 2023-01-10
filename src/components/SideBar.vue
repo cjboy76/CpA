@@ -3,14 +3,31 @@ import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ref } from "vue";
 import { BoxStore } from "../store";
 import ColorPicker from "./ColorPicker.vue";
+import { linearConvert } from "../p5/LinearConvert";
 
 const colorState = ref("");
+const editingBox = ref("");
+
 function setColor(color: string) {
   colorState.value = color;
 }
 
+function editBoxColor(color: string) {
+  if (!editingBox.value) return;
+  let checking = BoxStore.getBox(editingBox.value);
+  console.log("color:", linearConvert(color));
+  checking!.setColor(color);
+  setColor(color);
+}
+
 function deleteBox(id: string) {
   BoxStore.removeBox(id);
+}
+
+function setEditingBox(id: string) {
+  editingBox.value = id;
+  let checking = BoxStore.getBox(id);
+  setColor(checking!.color);
 }
 </script>
 
@@ -53,7 +70,10 @@ function deleteBox(id: string) {
                 <div
                   class="rounded ring-1 ring-black ring-opacity-5 bg-stone-50 dark:bg-stone-800 drop-shadow"
                 >
-                  <ColorPicker :color="colorState" @set-palette="setColor" />
+                  <ColorPicker
+                    :color="colorState"
+                    @set-palette="editBoxColor"
+                  />
                 </div>
               </PopoverPanel>
             </transition>
@@ -68,14 +88,21 @@ function deleteBox(id: string) {
         <li
           v-for="{ id, vertex, name } of BoxStore.boxes"
           :key="id"
-          class="py-1 border-y border-transparent transition-colors hover:border-violet-300"
+          class="py-1"
+          @click="setEditingBox(id)"
         >
           <div class="text-sm px-4 flex justify-between items-center">
             <h5>
               {{ name }}
+              <span class="text-violet-500 tetxt-xs" v-show="editingBox === id"
+                >checking</span
+              >
             </h5>
-            <button class="w-5 h-5 rounded-full p-1" @click="deleteBox(id)">
-              x
+            <button
+              class="w-5 h-5 p-1 flex justify-center items-center"
+              @click.stop="deleteBox(id)"
+            >
+              <span> X </span>
             </button>
           </div>
           <p class="text-xs pl-4">

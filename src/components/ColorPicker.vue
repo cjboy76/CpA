@@ -24,6 +24,7 @@
         </Tab>
       </TabList>
       <input
+        @input="emit('setPalette', palette)"
         v-model="palette"
         type="text"
         class="mt-1 block w-full px-3 py-2 rounded-md text-sm shadow-sm text-stone-800 dark:text-stone-300 focus:outline-none bg-stone-200 dark:bg-stone-600"

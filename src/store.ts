@@ -39,6 +39,13 @@ class Store {
   formatMap() {
     this.boxes = Array.from(this.boxesMap, ([name, value]) => value);
   }
+
+  setBoxColor(id: string, color: string) {
+    if (!this.boxesMap.has(id)) return;
+    let box = this.boxesMap.get(id);
+    box?.setColor(color);
+    this.formatMap();
+  }
 }
 
 function createStore() {

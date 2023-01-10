@@ -34,6 +34,7 @@ const p5sketch = p5i(() => {
       abs,
       dist,
       saveCanvas,
+      fill,
     }) {
       background(220);
       hoveredBox = undefined;
@@ -134,11 +135,14 @@ const p5sketch = p5i(() => {
 
       function drawTriangle(box: TriangleBox) {
         let borderColor = box.hovered ? "red" : "black";
+        fill(box.color);
         stroke(borderColor);
         strokeWeight(1);
 
         triangle(...box.dots);
         if (box.onDraft) {
+          fill(255, 255, 255);
+
           circle(...box.pointMap[0], 5);
           circle(...box.pointMap[1], 5);
           circle(...box.pointMap[2], 5);
