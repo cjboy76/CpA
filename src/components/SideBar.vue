@@ -3,21 +3,22 @@ import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ref } from "vue";
 import { BoxStore } from "../store";
 import ColorPicker from "./ColorPicker.vue";
-import { linearConvert } from "../p5/LinearConvert";
 
 const colorState = ref("");
+const opacityState = ref(0);
 const editingBox = ref("");
 
-function setColor(color: string) {
+function setBoxColor(color: string) {
+  if (!editingBox.value) return;
+  let checking = BoxStore.getBox(editingBox.value);
+  checking!.setColor(color);
   colorState.value = color;
 }
 
-function editBoxColor(color: string) {
+function setBoxOpacity() {
   if (!editingBox.value) return;
   let checking = BoxStore.getBox(editingBox.value);
-  console.log("color:", linearConvert(color));
-  checking!.setColor(color);
-  setColor(color);
+  checking!.setOpacity(opacityState.value / 100);
 }
 
 function deleteBox(id: string) {
@@ -27,7 +28,8 @@ function deleteBox(id: string) {
 function setEditingBox(id: string) {
   editingBox.value = id;
   let checking = BoxStore.getBox(id);
-  setColor(checking!.color);
+  colorState.value = checking!.color;
+  opacityState.value = checking!.opacity * 100;
 }
 </script>
 
@@ -41,8 +43,11 @@ function setEditingBox(id: string) {
           <input
             id="default-range"
             type="range"
-            value="100"
+            min="0"
+            max="100"
             class="accent-teal-500 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            @click="setBoxOpacity"
+            v-model="opacityState"
           />
         </li>
         <li class="flex items-center my-2 relative">
@@ -70,10 +75,7 @@ function setEditingBox(id: string) {
                 <div
                   class="rounded ring-1 ring-black ring-opacity-5 bg-stone-50 dark:bg-stone-800 drop-shadow"
                 >
-                  <ColorPicker
-                    :color="colorState"
-                    @set-palette="editBoxColor"
-                  />
+                  <ColorPicker :color="colorState" @set-palette="setBoxColor" />
                 </div>
               </PopoverPanel>
             </transition>

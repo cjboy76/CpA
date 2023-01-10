@@ -2,14 +2,15 @@ export type TDot = [number, number];
 export type TDots = [number, number, number, number, number, number];
 
 export class TriangleBox {
-  id: string;
-  name: string;
+  id: string = new Date().toISOString();
+  name: string = Math.random().toString(36).substring(2, 9);
   pointMap: Record<string, TDot> = {};
   vertex: TDot[] = [];
   dots!: TDots;
   hovered: boolean = false;
   onDraft: boolean = true;
-  color: string;
+  color: string = "white";
+  opacity: number = 1;
 
   constructor(
     x1: number,
@@ -19,9 +20,6 @@ export class TriangleBox {
     x3: number,
     y3: number
   ) {
-    this.id = new Date().toISOString();
-    this.name = Math.random().toString(36).substring(2, 9);
-    this.color = "white";
     this.updateCoordinate(x1, y1, x2, y2, x3, y3);
   }
 
@@ -60,6 +58,22 @@ export class TriangleBox {
   }
 
   setColor(color: string) {
-    this.color = color;
+    this.color = this.hexToRgb(color);
+  }
+
+  setOpacity(opacity: number) {
+    this.opacity = opacity;
+  }
+
+  hexToRgb(hex: string) {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? `
+      rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
+          result[3],
+          16
+        )}, 1)
+      `
+      : hex;
   }
 }
