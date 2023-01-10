@@ -8,6 +8,10 @@ const colorState = ref("");
 function setColor(color: string) {
   colorState.value = color;
 }
+
+function deleteBox(id: string) {
+  BoxStore.removeBox(id);
+}
 </script>
 
 <template>
@@ -61,9 +65,20 @@ function setColor(color: string) {
     <div>
       <h4 class="px-2 py-1 font-bold">Boxes Info</h4>
       <ul>
-        <li v-for="{ id, vertex } of BoxStore.boxes" :key="id">
-          <h5>Box {{ id }}</h5>
-          <p>
+        <li
+          v-for="{ id, vertex, name } of BoxStore.boxes"
+          :key="id"
+          class="py-1 border-y border-transparent transition-colors hover:border-violet-300"
+        >
+          <div class="text-sm px-4 flex justify-between items-center">
+            <h5>
+              {{ name }}
+            </h5>
+            <button class="w-5 h-5 rounded-full p-1" @click="deleteBox(id)">
+              x
+            </button>
+          </div>
+          <p class="text-xs pl-4">
             {{ vertex }}
           </p>
         </li>

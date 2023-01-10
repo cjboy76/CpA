@@ -33,6 +33,7 @@ class Store {
 
   removeBox(id: string) {
     this.boxesMap.delete(id);
+    this.formatMap();
   }
 
   formatMap() {

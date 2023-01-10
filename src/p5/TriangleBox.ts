@@ -3,6 +3,7 @@ export type TDots = [number, number, number, number, number, number];
 
 export class TriangleBox {
   id: string;
+  name: string;
   pointMap: Record<string, TDot> = {};
   vertex: TDot[] = [];
   dots!: TDots;
@@ -18,6 +19,7 @@ export class TriangleBox {
     y3: number
   ) {
     this.id = new Date().toISOString();
+    this.name = Math.random().toString(36).substring(2, 9);
     this.init(x1, y1, x2, y2, x3, y3);
   }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { p5sketch, boxes, save as saveCanvas, cnv } from "../p5";
+import { p5sketch, save as saveCanvas, cnv } from "../p5";
 import { onMounted, ref } from "vue";
 import { BoxStore } from "../store";
 

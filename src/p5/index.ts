@@ -1,18 +1,8 @@
 import { p5i } from "p5i";
 import { TriangleBox } from "./TriangleBox";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { BoxStore } from "../store";
 
-const p5State = reactive({
-  boxes: [],
-  detachBox: undefined,
-  detachIndex: undefined,
-  hoveredBox: undefined,
-  grabbing: false,
-  grabbingItem: undefined,
-});
-
-let boxes: TriangleBox[] = [];
 let detachBox: any;
 let detachIndex: any;
 let hoveredBox: any;
@@ -73,7 +63,7 @@ const p5sketch = p5i(() => {
 
           // Detect is there any box's vertex nearby.
           let [attached, attachDotIndex] = attachOtherBoxes(
-            boxes,
+            BoxStore.boxes,
             grabbingItem.id,
             mouseX,
             mouseY
@@ -200,4 +190,4 @@ const p5sketch = p5i(() => {
   };
 });
 
-export { p5sketch, boxes, cnv, save, p5State };
+export { p5sketch, cnv, save };
