@@ -37,7 +37,7 @@ const p5sketch = p5i(() => {
       saveCanvas,
       fill,
     }) {
-      background(220);
+      background("white");
       hoveredBox = undefined;
 
       for (const box of BoxStore.boxes) {

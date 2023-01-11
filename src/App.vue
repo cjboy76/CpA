@@ -3,6 +3,7 @@ import SideBar from "./components/SideBar.vue";
 import DrawBoard from "./components/DrawBoard.vue";
 import VSpacer from "./components/VSpacer.vue";
 import AppSetting from "./components/Setting.vue";
+import Preview from "./components/Preview.vue";
 import { onMounted, inject, watchEffect } from "vue";
 import { themeReactive } from "./state";
 
@@ -48,7 +49,9 @@ watchEffect(() => {
       <div class="col-span-6">
         <DrawBoard />
       </div>
-      <div class="col-span-2">Frames</div>
+      <div class="col-span-2">
+        <Preview />
+      </div>
     </main>
   </div>
 </template>

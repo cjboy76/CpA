@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { p5sketch, save as saveCanvas, cnv } from "../p5";
 import { onMounted, ref } from "vue";
-import { BoxStore } from "../store";
+import { BoxStore, FramesStore } from "../store";
 
 const sketchElement = ref();
 const preview = ref("");
@@ -21,6 +21,7 @@ function saveAsImage() {
 function saveAsPreview() {
   if (!cnv.value) return;
   preview.value = cnv.value.canvas.toDataURL("image/jpeg", 0.3);
+  FramesStore.add(preview.value);
 }
 </script>
 
@@ -34,7 +35,7 @@ function saveAsPreview() {
         Save canvas as image
       </button>
       <button class="btn-tool" id="saveAsPreview" @click="saveAsPreview">
-        Save canvas as image
+        Save canvas as frame
       </button>
     </div>
     <div id="sketch-holder" ref="sketchElement" class="w-full h-full">
