@@ -1,10 +1,9 @@
 <template>
-  <h5>Frames</h5>
-  <div class="px-2">
+  <div class="p-2 overflow-scroll" style="height: calc(100vh - 64px)">
     <div
       v-for="image of framesList"
       :key="image"
-      class="border border-stone-400 flex justify-between rounded-sm"
+      class="my-2 border border-stone-400 flex justify-between rounded-sm"
     >
       <img
         :src="image"
