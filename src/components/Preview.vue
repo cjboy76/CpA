@@ -13,6 +13,7 @@
       />
       <button
         class="flex justify-center items-center w-1/6 transition-colors hover:bg-red-500 hover:text-white"
+        @click="deleteFrames(image)"
       >
         <TrashBin />
       </button>
@@ -28,4 +29,8 @@ import { FramesStore } from "../store";
 const framesList = computed(() => {
   return [...FramesStore];
 });
+
+function deleteFrames(image: string) {
+  FramesStore.delete(image);
+}
 </script>
