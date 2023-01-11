@@ -1,10 +1,9 @@
 import gradient from "gradient-parser";
 import { linearAngleMap } from "../data/LinearAngle";
-import { TriangleBox } from "./TriangleBox";
 
 // 1. arg: ctx.createLinearGradient(arg)
 // 2. addColorStop length
-export function linearConvert(box: TriangleBox, style: string) {
+export function linearConvert(position: number[], style: string) {
   let converted = parse(style);
   let angle;
   if (
@@ -17,8 +16,6 @@ export function linearConvert(box: TriangleBox, style: string) {
         : converted.orientation!.value;
   }
 
-  let position = linearSize(box);
-
   return {
     ...gradientContextArg(Number(angle), position),
     colorStops: converted.colorStops,
@@ -28,21 +25,6 @@ export function linearConvert(box: TriangleBox, style: string) {
 function parse(style: string) {
   let converted = gradient.parse(style);
   return converted[0];
-}
-
-function linearSize(box: TriangleBox) {
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-  for (let i = 0; i < box.vertex.length; i++) {
-    minX = Math.min(minX, box.vertex[i][0]);
-    minY = Math.min(minY, box.vertex[i][1]);
-    maxX = Math.max(maxX, box.vertex[i][0]);
-    maxY = Math.max(maxY, box.vertex[i][1]);
-  }
-
-  return [minX, minY, maxX, maxY];
 }
 
 function gradientContextArg(angle: number, position: number[]) {

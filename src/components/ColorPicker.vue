@@ -17,12 +17,20 @@
         @click="setPalette(color)"
       ></button>
     </div>
+    <div class="my-2 flex flex-wrap">
+      <button
+        v-for="color of gradientColorSheet"
+        class="mx-1 my-0.5 w-8 h-8 rounded-full drop-shadow-md active:bg-violet-700 focus:outline-none focus:ring focus:ring-gray-300"
+        :style="{ background: color }"
+        @click="setPalette(color)"
+      ></button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { ColorSheet } from "../data/ColorSheet";
+import { ColorSheet, gradientColorSheet } from "../data/ColorSheet";
 const emit = defineEmits(["setPalette"]);
 const props = defineProps({
   color: String,

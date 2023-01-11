@@ -15,10 +15,8 @@ function setBoxColor(color: string) {
   colorState.value = color;
 }
 
-function setBoxOpacity() {
-  if (!editingBox.value) return;
-  let checking = BoxStore.getBox(editingBox.value);
-  checking!.setOpacity(opacityState.value / 100);
+function setBackgroundOpacity() {
+  console.log(opacityState.value);
 }
 
 function deleteBox(id: string) {
@@ -29,14 +27,13 @@ function setEditingBox(id: string) {
   editingBox.value = id;
   let checking = BoxStore.getBox(id);
   colorState.value = checking!.color;
-  opacityState.value = checking!.opacity * 100;
 }
 </script>
 
 <template>
   <div class="h-full">
     <div>
-      <h4 class="px-2 py-1 font-bold">Style</h4>
+      <h4 class="px-2 py-1 font-bold">Background</h4>
       <ul>
         <li class="flex items-center my-2">
           <label for="opacity" class="text-sm w-20 text-center">Opacity</label>
@@ -46,10 +43,16 @@ function setEditingBox(id: string) {
             min="0"
             max="100"
             class="accent-teal-500 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-            @click="setBoxOpacity"
+            @click="setBackgroundOpacity"
             v-model="opacityState"
           />
         </li>
+      </ul>
+    </div>
+    <div class="h-px w-full bg-violet-300"></div>
+    <div>
+      <h4 class="px-2 py-1 font-bold">Boxes</h4>
+      <ul>
         <li class="flex items-center my-2 relative">
           <label for="color" class="text-sm w-20 text-center">Color</label>
 
@@ -81,12 +84,6 @@ function setEditingBox(id: string) {
             </transition>
           </Popover>
         </li>
-      </ul>
-    </div>
-    <div class="h-px w-full bg-violet-300"></div>
-    <div>
-      <h4 class="px-2 py-1 font-bold">Boxes Info</h4>
-      <ul>
         <li
           v-for="{ id, vertex, name } of BoxStore.boxes"
           :key="id"
