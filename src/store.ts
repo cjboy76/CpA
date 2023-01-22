@@ -2,7 +2,12 @@ import { TriangleBox } from "./p5/TriangleBox";
 import { reactive } from "vue";
 
 export let BoxStore: Store;
-export let FramesStore: { image: string; frameBoxes: TriangleBox[] }[];
+export let FramesStore: {
+  image: string;
+  frameBoxes: TriangleBox[];
+  frameWidth: number;
+  frameHeight: number;
+}[];
 
 class Store {
   boxesMap: Map<string, TriangleBox> = new Map();

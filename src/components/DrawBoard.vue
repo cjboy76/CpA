@@ -2,6 +2,7 @@
 import { p5sketch, save as saveCanvas, cnv } from "../p5";
 import { onMounted, ref, toRaw } from "vue";
 import { BoxStore, FramesStore } from "../store";
+import { frameConvert } from "../boxTransition";
 
 const sketchElement = ref();
 const preview = ref("");
@@ -26,9 +27,11 @@ function saveAsPreview() {
   FramesStore.push({
     image: preview.value,
     frameBoxes,
+    frameWidth: sketchElement.value.clientWidth,
+    frameHeight: sketchElement.value.clientHeight,
   });
 
-  console.log(toRaw(BoxStore));
+  console.log(frameConvert(FramesStore[0]));
 }
 </script>
 

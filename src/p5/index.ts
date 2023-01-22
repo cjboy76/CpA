@@ -2,7 +2,6 @@ import { p5i } from "p5i";
 import { TriangleBox } from "./TriangleBox";
 import { ref } from "vue";
 import { BoxStore } from "../store";
-import { linearConvert } from "./LinearConvert";
 
 let detachBox: any;
 let detachIndex: any;
