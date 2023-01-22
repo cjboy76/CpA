@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { p5sketch, save as saveCanvas, cnv } from "../p5";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, toRaw } from "vue";
 import { BoxStore, FramesStore } from "../store";
 
 const sketchElement = ref();
@@ -21,7 +21,14 @@ function saveAsImage() {
 function saveAsPreview() {
   if (!cnv.value) return;
   preview.value = cnv.value.canvas.toDataURL("image/jpeg", 0.3);
-  FramesStore.add(preview.value);
+  const frameBoxes = toRaw(BoxStore).boxes;
+
+  FramesStore.push({
+    image: preview.value,
+    frameBoxes,
+  });
+
+  console.log(toRaw(BoxStore));
 }
 </script>
 

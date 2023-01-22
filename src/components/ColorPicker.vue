@@ -17,14 +17,6 @@
         @click="setPalette(color)"
       ></button>
     </div>
-    <div class="my-2 flex flex-wrap">
-      <button
-        v-for="color of gradientColorSheet"
-        class="mx-1 my-0.5 w-8 h-8 rounded-full drop-shadow-md active:bg-violet-700 focus:outline-none focus:ring focus:ring-gray-300"
-        :style="{ background: color }"
-        @click="setPalette(color)"
-      ></button>
-    </div>
   </div>
 </template>
 

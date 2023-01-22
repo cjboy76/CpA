@@ -2,7 +2,7 @@ import { TriangleBox } from "./p5/TriangleBox";
 import { reactive } from "vue";
 
 export let BoxStore: Store;
-export let FramesStore: Set<string>;
+export let FramesStore: { image: string; frameBoxes: TriangleBox[] }[];
 
 class Store {
   boxesMap: Map<string, TriangleBox> = new Map();
@@ -30,6 +30,7 @@ class Store {
 
   clearBoxes() {
     this.boxesMap.clear();
+    this.formatMap();
   }
 
   removeBox(id: string) {
@@ -60,7 +61,7 @@ createStore();
 
 function createFrames() {
   if (FramesStore) return FramesStore;
-  FramesStore = reactive(new Set());
+  FramesStore = reactive([]);
   return FramesStore;
 }
 

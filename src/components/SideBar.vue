@@ -5,7 +5,6 @@ import { BoxStore } from "../store";
 import ColorPicker from "./ColorPicker.vue";
 
 const colorState = ref("");
-const opacityState = ref(0);
 const editingBox = ref("");
 
 function setBoxColor(color: string) {
@@ -13,10 +12,6 @@ function setBoxColor(color: string) {
   let checking = BoxStore.getBox(editingBox.value);
   checking!.setColor(color);
   colorState.value = color;
-}
-
-function setBackgroundOpacity() {
-  console.log(opacityState.value);
 }
 
 function deleteBox(id: string) {
@@ -32,24 +27,6 @@ function setEditingBox(id: string) {
 
 <template>
   <div class="h-full">
-    <div>
-      <h4 class="px-2 py-1 font-bold">Background</h4>
-      <ul>
-        <li class="flex items-center my-2">
-          <label for="opacity" class="text-sm w-20 text-center">Opacity</label>
-          <input
-            id="default-range"
-            type="range"
-            min="0"
-            max="100"
-            class="accent-teal-500 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-            @click="setBackgroundOpacity"
-            v-model="opacityState"
-          />
-        </li>
-      </ul>
-    </div>
-    <div class="h-px w-full bg-violet-300"></div>
     <div>
       <h4 class="px-2 py-1 font-bold">Boxes</h4>
       <ul>
