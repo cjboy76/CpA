@@ -7,28 +7,44 @@ type TFrame = {
   frameHeight: number;
 };
 
-export function frameConvert({ frameBoxes, frameWidth, frameHeight }: TFrame) {
-  let frameboxes = [];
+type TCoordinate = {
+  x: number;
+  y: number;
+};
+
+type TConvertedBoxes = [TCoordinate, TCoordinate, TCoordinate];
+/**
+ *
+ * 回傳截圖內所有三角形轉換後座標
+ */
+export function framesConverter({
+  frameBoxes,
+  frameWidth,
+  frameHeight,
+}: TFrame): TConvertedBoxes[] {
+  let boxInfoPerFrame = [];
   for (let i = 0; i < frameBoxes.length; i++) {
     let box = frameBoxes[i];
     let converted = convertVertex(box);
-    frameboxes.push(converted);
+    boxInfoPerFrame.push(converted);
   }
 
-  return frameboxes;
+  return boxInfoPerFrame;
 
   function convertVertex(box: TriangleBox) {
-    let vertex = box.vertex;
-    let output = [];
-    for (let i = 0; i < vertex.length; i++) {
-      let [x, y] = vertex[i];
+    let output: any[] = [];
+    box.vertex.forEach((v) => {
+      let [x, y] = v;
       output.push(convertRect(x, y));
-    }
+    });
 
-    return output;
+    return output as TConvertedBoxes;
   }
 
   function convertRect(x: number, y: number) {
-    return [(x / frameWidth) * 100, (y / frameHeight) * 100];
+    return {
+      x: (x / frameWidth) * 100,
+      y: (y / frameHeight) * 100,
+    };
   }
 }

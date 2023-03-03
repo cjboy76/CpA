@@ -5,7 +5,11 @@ export class TriangleBox {
   id: string = new Date().toISOString();
   name: string = Math.random().toString(36).substring(2, 9);
   pointMap: Record<string, TDot> = {};
-  vertex: TDot[] = [];
+  vertex: [TDot, TDot, TDot] = [
+    [0, 0],
+    [0, 0],
+    [0, 0],
+  ];
   dots!: TDots;
   hovered: boolean = false;
   onDraft: boolean = true;

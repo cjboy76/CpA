@@ -2,7 +2,7 @@
 import { p5sketch, save as saveCanvas, cnv } from "../p5";
 import { onMounted, ref, toRaw } from "vue";
 import { BoxStore, FramesStore } from "../store";
-import { frameConvert } from "../boxTransition";
+import { framesConverter } from "../boxTransition";
 
 const sketchElement = ref();
 const preview = ref("");
@@ -31,7 +31,7 @@ function saveAsPreview() {
     frameHeight: sketchElement.value.clientHeight,
   });
 
-  console.log(frameConvert(FramesStore[0]));
+  console.log(framesConverter(FramesStore[0]));
 }
 </script>
 
