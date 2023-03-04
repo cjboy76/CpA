@@ -1,6 +1,6 @@
 import { p5i } from "p5i";
 import { TriangleBox } from "./TriangleBox";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { BoxStore } from "../store";
 
 let detachBox: any;
@@ -12,14 +12,28 @@ const save = ref(false);
 const cnv = ref();
 export const isZooming = ref(false);
 export const scaleSize = ref(1);
+let cnvHeight: number;
+let cnvWidth: number;
+
+let backgroundState = reactive({
+  defaultGap: 50,
+  x: 0,
+  y: 0,
+  update(vectorx: number, vectory: number) {
+    this.x += vectorx;
+    if (this.x > this.defaultGap || this.x < this.defaultGap * -1) this.x = 0;
+    this.y += vectory;
+    if (this.y > this.defaultGap || this.y < this.defaultGap * -1) this.y = 0;
+  },
+});
 
 const p5sketch = p5i(() => {
   return {
     setup({ createCanvas }) {
       let mountElement = document.querySelector("#sketch-holder");
-      let height = mountElement?.clientHeight;
-      let width = mountElement?.clientWidth;
-      cnv.value = createCanvas(width || 1000, height || 1000);
+      cnvHeight = mountElement?.clientHeight || 1000;
+      cnvWidth = mountElement?.clientWidth || 1000;
+      cnv.value = createCanvas(cnvWidth, cnvHeight);
     },
 
     draw({
@@ -38,8 +52,27 @@ const p5sketch = p5i(() => {
       saveCanvas,
       fill,
       mouseIsPressed,
+      line,
     }) {
       background("white");
+      // Background grid columns
+      for (
+        let startX = backgroundState.x;
+        startX < cnvWidth;
+        startX += backgroundState.defaultGap
+      ) {
+        for (
+          let startY = backgroundState.y;
+          startY < cnvHeight;
+          startY += backgroundState.defaultGap
+        ) {
+          stroke(240);
+          strokeWeight(1);
+          line(startX, 0, startX, cnvHeight);
+          line(0, startY, cnvWidth, startY);
+        }
+      }
+
       hoveredBox = undefined;
 
       for (const box of BoxStore.boxes) {
@@ -66,6 +99,7 @@ const p5sketch = p5i(() => {
         for (const box of BoxStore.boxes) {
           box.updateDots(dirX, dirY);
         }
+        backgroundState.update(dirX, dirY);
       }
 
       // Grab and dragging box or box's vertex
