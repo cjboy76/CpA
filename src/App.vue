@@ -35,12 +35,10 @@ watchEffect(() => {
       class="px-2 font-bold border-b border-violet-300 h-16 flex items-center"
     >
       <a href="/">
-        <h1 class="text-xl px-2">Clip-path Animate</h1>
+        <h1 class="text-xl px-2">Cpa</h1>
       </a>
       <v-spacer></v-spacer>
       <AppSetting />
-      <button type="button" class="btn-primary mx-1">Edit</button>
-      <button type="button" class="btn-primary mx-1">Result</button>
     </header>
     <main class="grid grid-cols-10" style="height: calc(100vh - 64px)">
       <div class="col-span-2">

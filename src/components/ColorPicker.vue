@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { ColorSheet, gradientColorSheet } from "../data/ColorSheet";
+import { ColorSheet } from "../data/ColorSheet";
 const emit = defineEmits(["setPalette"]);
 const props = defineProps({
   color: String,

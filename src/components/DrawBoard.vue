@@ -39,13 +39,13 @@ function saveAsPreview() {
   <div class="relative h-full">
     <div class="absolute top-0 left-0 z-10 mx-2 my-1">
       <button class="btn-tool" id="appendNewBox" @click="createBoxHandler">
-        Add a new box
+        Create a new box
       </button>
       <button class="mx-1 btn-tool" id="saveAsImage" @click="saveAsImage">
-        Save canvas as image
+        Save image
       </button>
       <button class="btn-tool" id="saveAsPreview" @click="saveAsPreview">
-        Save canvas as frame
+        Save canvas
       </button>
     </div>
     <div id="sketch-holder" ref="sketchElement" class="w-full h-full">

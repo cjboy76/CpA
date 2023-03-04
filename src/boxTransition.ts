@@ -12,7 +12,7 @@ type TCoordinate = {
   y: number;
 };
 
-type TConvertedBoxes = [TCoordinate, TCoordinate, TCoordinate];
+export type TConvertedBoxes = [TCoordinate, TCoordinate, TCoordinate];
 /**
  *
  * 回傳截圖內所有三角形轉換後座標
