@@ -10,6 +10,8 @@ let grabbing = false;
 let grabbingItem: any;
 const save = ref(false);
 const cnv = ref();
+export const isZooming = ref(false);
+export const scaleSize = ref(1);
 
 const p5sketch = p5i(() => {
   return {
@@ -35,6 +37,7 @@ const p5sketch = p5i(() => {
       dist,
       saveCanvas,
       fill,
+      mouseIsPressed,
     }) {
       background("white");
       hoveredBox = undefined;
@@ -54,6 +57,15 @@ const p5sketch = p5i(() => {
         cursor("grab");
       } else {
         cursor("default");
+      }
+
+      // Dragging canvas
+      if (mouseIsPressed && !grabbing && !grabbingItem) {
+        let dirX = mouseX - pmouseX;
+        let dirY = mouseY - pmouseY;
+        for (const box of BoxStore.boxes) {
+          box.updateDots(dirX, dirY);
+        }
       }
 
       // Grab and dragging box or box's vertex
