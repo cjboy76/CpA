@@ -2,12 +2,15 @@ import { TriangleBox } from "./p5/TriangleBox";
 import { reactive } from "vue";
 
 export let BoxStore: Store;
-export let FramesStore: {
+
+type TFrameCanvas = {
+  id: string;
   image: string;
-  frameBoxes: TriangleBox[];
+  frameBoxes: Map<string, TriangleBox>;
   frameWidth: number;
   frameHeight: number;
-}[];
+};
+export let FramesStore: Map<string, TFrameCanvas>;
 
 class Store {
   boxesMap: Map<string, TriangleBox> = new Map();
@@ -24,16 +27,12 @@ class Store {
     return this.boxesMap.get(id);
   }
 
-  getBoxes() {
-    return this.boxes;
-  }
-
   updateBox(box: TriangleBox) {
     this.boxesMap.set(box.id, box);
     return this.boxesMap;
   }
 
-  clearBoxes() {
+  clear() {
     this.boxesMap.clear();
     this.formatMap();
   }
@@ -53,6 +52,12 @@ class Store {
     box?.setColor(color);
     this.formatMap();
   }
+
+  restore(newMap: Map<string, TriangleBox>) {
+    this.boxesMap = newMap;
+    this.formatMap();
+    return this.boxes;
+  }
 }
 
 function createStore() {
@@ -66,7 +71,7 @@ createStore();
 
 function createFrames() {
   if (FramesStore) return FramesStore;
-  FramesStore = reactive([]);
+  FramesStore = reactive(new Map());
   return FramesStore;
 }
 

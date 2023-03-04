@@ -2,7 +2,6 @@
 import { p5sketch, save as saveCanvas, cnv } from "../p5";
 import { onMounted, ref, toRaw } from "vue";
 import { BoxStore, FramesStore } from "../store";
-import { framesConverter } from "../boxTransition";
 
 const sketchElement = ref();
 const preview = ref("");
@@ -19,19 +18,34 @@ function saveAsImage() {
   saveCanvas.value = true;
 }
 
+function clearCanvas() {
+  BoxStore.clear();
+}
+
 function saveAsPreview() {
   if (!cnv.value) return;
   preview.value = cnv.value.canvas.toDataURL("image/jpeg", 0.3);
-  const frameBoxes = toRaw(BoxStore).boxes;
+  const frameBoxes = new Map(toRaw(BoxStore).boxesMap);
+  const frameId = generateOTID();
 
-  FramesStore.push({
+  FramesStore.set(frameId, {
+    id: frameId,
     image: preview.value,
     frameBoxes,
     frameWidth: sketchElement.value.clientWidth,
     frameHeight: sketchElement.value.clientHeight,
   });
+}
 
-  console.log(framesConverter(FramesStore[0]));
+function generateOTID() {
+  const digits = "#$%&!@_+1234567890";
+  let OTID = "";
+
+  for (let i = 0; i <= 8; i++) {
+    OTID += digits[Math.floor(Math.random() * (digits.length - 1))];
+  }
+
+  return OTID;
 }
 </script>
 
@@ -46,6 +60,9 @@ function saveAsPreview() {
       </button>
       <button class="btn-tool" id="saveAsPreview" @click="saveAsPreview">
         Save canvas
+      </button>
+      <button class="btn-tool" id="saveAsPreview" @click="clearCanvas">
+        Clear canvas
       </button>
     </div>
     <div id="sketch-holder" ref="sketchElement" class="w-full h-full">
