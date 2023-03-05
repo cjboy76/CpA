@@ -43,7 +43,11 @@ class Store {
   }
 
   formatMap() {
-    this.boxes = Array.from(this.boxesMap, ([name, value]) => value);
+    this.boxes = Array.from(this.boxesMap, ([key, box]) => {
+      // 更新最新頂點，以免遇到相同的 box 沒更新到。
+      box.updateDots(0, 0);
+      return box;
+    });
   }
 
   setBoxColor(id: string, color: string) {

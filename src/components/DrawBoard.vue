@@ -2,9 +2,9 @@
 import { p5sketch, save as saveCanvas, cnv } from "../p5";
 import { onMounted, ref, toRaw } from "vue";
 import { BoxStore, FramesStore } from "../store";
+import { TriangleBox } from "../p5/TriangleBox";
 
 const sketchElement = ref();
-const preview = ref("");
 
 onMounted(() => {
   p5sketch.mount(sketchElement.value);
@@ -24,17 +24,31 @@ function clearCanvas() {
 
 function saveAsPreview() {
   if (!cnv.value) return;
-  preview.value = cnv.value.canvas.toDataURL("image/jpeg", 0.3);
-  const frameBoxes = new Map(toRaw(BoxStore).boxesMap);
-  const frameId = generateOTID();
+  const image = cnv.value.canvas.toDataURL("image/jpeg", 0.3);
+  const frameBoxes = cloneTriangleboxMap(BoxStore.boxesMap);
+  const id = generateOTID();
 
-  FramesStore.set(frameId, {
-    id: frameId,
-    image: preview.value,
+  FramesStore.set(id, {
+    id,
+    image,
     frameBoxes,
     frameWidth: sketchElement.value.clientWidth,
     frameHeight: sketchElement.value.clientHeight,
   });
+}
+
+function cloneTriangleboxMap(map: Map<string, TriangleBox>) {
+  let newMap = new Map();
+  for (let [key, value] of map.entries()) {
+    let clone = Object.assign(
+      Object.create(Object.getPrototypeOf(value)),
+      value
+    );
+
+    newMap.set(key, clone);
+  }
+
+  return newMap;
 }
 
 function generateOTID() {

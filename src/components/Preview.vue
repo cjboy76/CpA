@@ -4,12 +4,11 @@
       v-for="{ image, id } of frameList"
       :key="id"
       class="my-2 border border-stone-400 flex justify-between rounded-sm"
-      @click="setBoxstore(id)"
     >
       <img
         :src="image"
-        :alt="image"
         class="transition-transform w-5/6 mx-auto"
+        @click="setBoxstore(id)"
       />
       <button
         class="flex justify-center items-center w-1/6 transition-colors hover:bg-red-500 hover:text-white"
@@ -27,19 +26,13 @@ import { BoxStore, FramesStore } from "../store";
 import { computed } from "vue";
 
 const frameList = computed(() => {
-  let list = [];
-  for (var f of FramesStore.values()) {
-    list.push({
-      id: f.id,
-      image: f.image,
-    });
-  }
-  return list;
+  return Array.from(FramesStore, ([i, f]) => {
+    return { id: f.id, image: f.image };
+  });
 });
 
 function setBoxstore(frameId: string) {
-  let targetCnv = FramesStore.get(frameId);
-  console.log(targetCnv);
+  const targetCnv = FramesStore.get(frameId);
   BoxStore.restore(targetCnv!.frameBoxes);
 }
 
