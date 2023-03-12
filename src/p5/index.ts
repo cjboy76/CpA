@@ -1,6 +1,6 @@
 import { p5i } from "p5i";
 import { TriangleBox } from "./TriangleBox";
-import { reactive, ref } from "vue";
+import { reactive, ref, Ref } from "vue";
 import { BoxStore } from "../store";
 
 let detachBox: any;
@@ -14,7 +14,7 @@ export const isZooming = ref(false);
 export const scaleSize = ref(1);
 let cnvHeight: number;
 let cnvWidth: number;
-
+const defaultColumnWidth = 50;
 let backgroundState = reactive({
   defaultGap: 50,
   x: 0,
@@ -55,33 +55,8 @@ const p5sketch = p5i(() => {
       line,
     }) {
       background("white");
-      // Background grid columns
-      for (
-        let startX = backgroundState.x;
-        startX < cnvWidth;
-        startX += backgroundState.defaultGap
-      ) {
-        for (
-          let startY = backgroundState.y;
-          startY < cnvHeight;
-          startY += backgroundState.defaultGap
-        ) {
-          stroke(240);
-          strokeWeight(1);
-          line(startX, 0, startX, cnvHeight);
-          line(0, startY, cnvWidth, startY);
-        }
-      }
 
       hoveredBox = undefined;
-
-      for (const box of BoxStore.boxes) {
-        // Draw boxes
-        drawTriangle(box);
-        // Detect mouseover boxes and change borders color
-        box.hovered = collidePointTriangle(mouseX, mouseY, ...box.dots);
-        if (box.hovered) hoveredBox = box;
-      }
 
       // Cursor style
       if (grabbing) {
@@ -159,6 +134,44 @@ const p5sketch = p5i(() => {
         grabbing = !!detachBox || !!hoveredBox;
         grabbingItem = detachBox || hoveredBox;
       });
+
+      cnv.value.mouseWheel((e: WheelEvent) => {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+          if (scaleSize.value > 1.9) return;
+          scaleSize.value += 0.05;
+        } else {
+          if (scaleSize.value < 0.2) return;
+          scaleSize.value += -0.05;
+        }
+      });
+      backgroundState.defaultGap = defaultColumnWidth * scaleSize.value;
+
+      // Background grid columns
+      for (
+        let startX = backgroundState.x;
+        startX < cnvWidth;
+        startX += backgroundState.defaultGap
+      ) {
+        for (
+          let startY = backgroundState.y;
+          startY < cnvHeight;
+          startY += backgroundState.defaultGap
+        ) {
+          stroke(240);
+          strokeWeight(1);
+          line(startX, 0, startX, cnvHeight);
+          line(0, startY, cnvWidth, startY);
+        }
+      }
+
+      for (const box of BoxStore.boxes) {
+        // Draw boxes
+        drawTriangle(box);
+        // Detect mouseover boxes and change borders color
+        box.hovered = collidePointTriangle(mouseX, mouseY, ...box.dots);
+        if (box.hovered) hoveredBox = box;
+      }
 
       // Save image
       if (save.value) {

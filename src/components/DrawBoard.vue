@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { p5sketch, save as saveCanvas, cnv } from "../p5";
-import { onMounted, ref, toRaw } from "vue";
+import { p5sketch, save as saveCanvas, cnv, scaleSize } from "../p5";
+import { onMounted, ref, computed } from "vue";
 import { BoxStore, FramesStore } from "../store";
 import { TriangleBox } from "../p5/TriangleBox";
 
 const sketchElement = ref();
+const zoomRate = computed(() => Math.floor(scaleSize.value * 100));
 
 onMounted(() => {
   p5sketch.mount(sketchElement.value);
@@ -72,12 +73,12 @@ function generateOTID() {
       <button class="mx-1 btn-tool" id="saveAsImage" @click="saveAsImage">
         Save image
       </button>
-      <button class="btn-tool" id="saveAsPreview" @click="saveAsPreview">
-        Save canvas
-      </button>
-      <button class="btn-tool" id="saveAsPreview" @click="clearCanvas">
-        Clear canvas
-      </button>
+      <button class="btn-tool" @click="saveAsPreview">Save canvas</button>
+      <button class="btn-tool" @click="clearCanvas">Clear canvas</button>
+    </div>
+    <div class="absolute left-0 bottom-0 z-10 text-stone-600">
+      {{ zoomRate }}%
+      <button class="btn-tool" @click="scaleSize = 1">Default</button>
     </div>
     <div id="sketch-holder" ref="sketchElement" class="w-full h-full">
       <!-- Our sketch will go here! -->
