@@ -53,6 +53,8 @@ const p5sketch = p5i(() => {
       fill,
       mouseIsPressed,
       line,
+      translate,
+      scale,
     }) {
       background("white");
 
@@ -145,7 +147,11 @@ const p5sketch = p5i(() => {
           scaleSize.value += -0.05;
         }
       });
-      backgroundState.defaultGap = defaultColumnWidth * scaleSize.value;
+      translate(mouseX, mouseY);
+      scale(scaleSize.value);
+      translate(-mouseX, -mouseY);
+
+      // backgroundState.defaultGap = defaultColumnWidth * scaleSize.value;
 
       // Background grid columns
       for (
