@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TriangleIcon } from "./Icones";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ref, watchEffect } from "vue";
 import { BoxStore } from "../store";
@@ -70,18 +71,24 @@ function setEditingBox(id: string) {
           </Popover>
         </li>
         <li
-          v-for="{ id, vertex, name } of BoxStore.boxes"
+          v-for="{ id, name } of BoxStore.boxes"
           :key="id"
           class="py-1"
           @click="setEditingBox(id)"
         >
           <div class="text-sm px-4 flex justify-between items-center">
-            <h5>
-              {{ name }}
-              <span class="text-violet-500 tetxt-xs" v-show="editingBox === id"
-                >edit</span
-              >
-            </h5>
+            <div class="flex items-center">
+              <!-- <div class="triangle"></div> -->
+              <triangle-icon class="mx-2" />
+              <h5>
+                {{ name }}
+                <span
+                  class="text-violet-500 tetxt-xs"
+                  v-show="editingBox === id"
+                  >edit</span
+                >
+              </h5>
+            </div>
             <button
               class="w-5 h-5 p-1 flex justify-center items-center"
               @click.stop="deleteBox(id)"
@@ -89,11 +96,18 @@ function setEditingBox(id: string) {
               <span> X </span>
             </button>
           </div>
-          <p class="text-xs pl-4">
-            {{ vertex }}
-          </p>
         </li>
       </ul>
     </div>
   </div>
 </template>
+
+<style scoped>
+.triangle {
+  background-color: aliceblue;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  width: 20px;
+  height: 20px;
+  margin: 0 1em;
+}
+</style>

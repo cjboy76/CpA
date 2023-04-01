@@ -26,6 +26,7 @@ function saveAsPreview() {
   if (!cnv.value) return;
   const image = cnv.value.canvas.toDataURL("image/jpeg", 0.3);
   const frameBoxes = cloneTriangleboxMap(BoxStore.boxesMap);
+  console.log({ frameBoxes });
   const id = generateOTID();
 
   FramesStore.set(id, {
