@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TriangleIcon } from "./Icones";
+import { TriangleIcon, PencilIcon } from "./Icones";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ref, watchEffect } from "vue";
 import { BoxStore } from "../store";
@@ -71,23 +71,29 @@ function setEditingBox(id: string) {
           </Popover>
         </li>
         <li
-          v-for="{ id, name } of BoxStore.boxes"
+          v-for="{ id, name, color } of BoxStore.boxes"
           :key="id"
           class="py-1"
           @click="setEditingBox(id)"
         >
           <div class="text-sm px-4 flex justify-between items-center">
             <div class="flex items-center">
-              <!-- <div class="triangle"></div> -->
-              <triangle-icon class="mx-2" />
+              <triangle-icon
+                class="mx-2"
+                :style="{
+                  color:
+                    color === 'white'
+                      ? 'rgb(156 163 175 / var(--tw-text-opacity))'
+                      : color,
+                }"
+              />
               <h5>
                 {{ name }}
-                <span
-                  class="text-violet-500 tetxt-xs"
-                  v-show="editingBox === id"
-                  >edit</span
-                >
               </h5>
+              <PencilIcon
+                class="text-violet-500 tetxt-xs dark:text-stone-300 mx-2"
+                v-show="editingBox === id"
+              />
             </div>
             <button
               class="w-5 h-5 p-1 flex justify-center items-center"
@@ -101,13 +107,3 @@ function setEditingBox(id: string) {
     </div>
   </div>
 </template>
-
-<style scoped>
-.triangle {
-  background-color: aliceblue;
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  width: 20px;
-  height: 20px;
-  margin: 0 1em;
-}
-</style>

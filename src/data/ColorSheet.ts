@@ -11,6 +11,8 @@ export const ColorSheet = [
   "#e97171",
   "#FF88AA",
   "#fdad5d",
+  "rgb(235, 64, 52)",
+  "rgb(52, 235, 165)",
 ];
 
 export const gradientColorSheet = [
