@@ -1,6 +1,6 @@
 import { p5i } from "p5i";
 import { TriangleBox } from "./TriangleBox";
-import { reactive, ref, Ref } from "vue";
+import { reactive, ref } from "vue";
 import { BoxStore } from "../store";
 
 let detachBox: any;
@@ -10,11 +10,12 @@ let grabbing = false;
 let grabbingItem: any;
 const save = ref(false);
 const cnv = ref();
+export const dblclickItem = ref("");
 export const isZooming = ref(false);
 export const scaleSize = ref(1);
 let cnvHeight: number;
 let cnvWidth: number;
-const defaultColumnWidth = 50;
+// const defaultColumnWidth = 50;
 let backgroundState = reactive({
   defaultGap: 50,
   x: 0,
@@ -53,8 +54,8 @@ const p5sketch = p5i(() => {
       fill,
       mouseIsPressed,
       line,
-      translate,
-      scale,
+      // translate,
+      // scale,
     }) {
       background("white");
 
@@ -137,6 +138,12 @@ const p5sketch = p5i(() => {
         grabbingItem = detachBox || hoveredBox;
       });
 
+      cnv.value.doubleClicked(() => {
+        if (hoveredBox) {
+          dblclickItem.value = hoveredBox.id;
+        }
+      });
+
       cnv.value.mouseWheel((e: WheelEvent) => {
         e.preventDefault();
         if (e.deltaY < 0) {
@@ -147,9 +154,9 @@ const p5sketch = p5i(() => {
           scaleSize.value += -0.05;
         }
       });
-      translate(mouseX, mouseY);
-      scale(scaleSize.value);
-      translate(-mouseX, -mouseY);
+      // translate(mouseX, mouseY);
+      // scale(scaleSize.value);
+      // translate(-mouseX, -mouseY);
 
       // backgroundState.defaultGap = defaultColumnWidth * scaleSize.value;
 

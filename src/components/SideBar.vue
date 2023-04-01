@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { BoxStore } from "../store";
 import ColorPicker from "./ColorPicker.vue";
+import { dblclickItem } from "../p5";
 
 const colorState = ref("");
 const editingBox = ref("");
+
+watchEffect(() => {
+  if (dblclickItem.value) {
+    setEditingBox(dblclickItem.value);
+    dblclickItem.value = "";
+  }
+});
 
 function setBoxColor(color: string) {
   if (!editingBox.value) return;
@@ -71,7 +79,7 @@ function setEditingBox(id: string) {
             <h5>
               {{ name }}
               <span class="text-violet-500 tetxt-xs" v-show="editingBox === id"
-                >checking</span
+                >edit</span
               >
             </h5>
             <button
