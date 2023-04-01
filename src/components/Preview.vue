@@ -24,6 +24,7 @@
 import { TrashBin } from "./Icones";
 import { BoxStore, FramesStore } from "../store";
 import { computed } from "vue";
+import { cloneTriangleboxMap } from "../composoble";
 
 const frameList = computed(() => {
   return Array.from(FramesStore, ([i, f]) => {
@@ -32,8 +33,8 @@ const frameList = computed(() => {
 });
 
 function setBoxstore(frameId: string) {
-  const targetCnv = FramesStore.get(frameId);
-  BoxStore.restore(targetCnv!.frameBoxes);
+  const t = FramesStore.get(frameId);
+  BoxStore.restore(cloneTriangleboxMap(t!.frameBoxes));
 }
 
 function deleteFrames(frameId: string) {

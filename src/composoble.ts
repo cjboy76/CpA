@@ -1,16 +1,12 @@
 import { TriangleBox } from "./p5/TriangleBox";
+import cloneDeep from "lodash.clonedeep";
 
 export function cloneTriangleboxMap(
   map: Map<string, TriangleBox>
 ): Map<string, TriangleBox> {
   let newMap = new Map();
   for (let [key, value] of map.entries()) {
-    let clone = Object.assign(
-      Object.create(Object.getPrototypeOf(value)),
-      value
-    );
-
-    newMap.set(key, clone);
+    newMap.set(key, cloneDeep(value));
   }
 
   return newMap;

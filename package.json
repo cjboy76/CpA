@@ -12,10 +12,12 @@
     "@headlessui/vue": "^1.7.7",
     "@types/gradient-parser": "^0.1.2",
     "gradient-parser": "^1.0.2",
+    "lodash.clonedeep": "^4.5.0",
     "p5i": "^0.4.2",
     "vue": "^3.2.45"
   },
   "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.7",
     "@vitejs/plugin-vue": "^4.0.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.20",

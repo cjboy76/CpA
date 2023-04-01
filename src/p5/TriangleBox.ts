@@ -2,7 +2,7 @@ export type TDot = [number, number];
 export type TDots = [number, number, number, number, number, number];
 
 export class TriangleBox {
-  id: string = new Date().toISOString();
+  id: string = Math.random().toString(36).substring(2, 9);
   name: string = Math.random().toString(36).substring(2, 9);
   pointMap: Record<string, TDot> = {};
   vertex: [TDot, TDot, TDot] = [
